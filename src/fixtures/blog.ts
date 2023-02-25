@@ -5,6 +5,9 @@ import { NotionClient } from "./notion-client";
 
 const blogLogger = logger.child({ module: "notion" });
 
+const publishedAttribute = import.meta.env.PUBLISHED_ATTRIBUTE;
+const isDev = import.meta.env.DEV;
+
 export class Blog {
   private notion: NotionClient;
   constructor() {
@@ -18,7 +21,21 @@ export class Blog {
         return response;
       }
 
-      const pages = response.data.results.filter(isFullPage);
+      const pages = response.data.results.filter(isFullPage).filter((page) => {
+        const published = page.properties[publishedAttribute];
+
+        if (published.type !== "checkbox") {
+          blogLogger.error(
+            { published },
+            `Published attribute must be a checkbox, is ${published.type} instead. Check the value of PUBLISHED_ATTRIBUTE in .env.`
+          );
+
+          throw new Error("Published attribute is not a checkbox");
+        }
+
+        return isDev ? true : published?.checkbox;
+      });
+      blogLogger.trace({ pages }, "Fetched pages");
 
       const paths = pages.map((page) => {
         const post = page.properties.Post;

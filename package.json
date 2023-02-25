@@ -1,20 +1,20 @@
 {
-	"name": "astro-notion-template",
-	"type": "module",
-	"version": "0.0.1",
-	"scripts": {
-		"dev": "astro dev",
-		"start": "astro dev",
-		"build": "astro build",
-		"preview": "astro preview",
-		"astro": "astro"
-	},
-	"dependencies": {
-		"@notionhq/client": "^2.2.3",
-		"astro": "^2.0.15"
-	},
-	"devDependencies": {
-		"pino": "^8.11.0",
-		"pino-pretty": "^9.4.0"
-	}
+  "name": "poltergeist",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@notionhq/client": "^2.2.3",
+    "astro": "^2.0.15"
+  },
+  "devDependencies": {
+    "pino": "^8.11.0",
+    "pino-pretty": "^9.4.0"
+  }
 }

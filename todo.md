@@ -5,7 +5,7 @@
 - [x] - add notion renderer
 - [x] - add basic Astro blog post renderer
 - [ ] - investigate generating markdown on demand (e.g. from CI/CD)
-- [ ] - add draft support
+- [x] - add draft support
 - [ ] - add metadata management from Notion
 - map Notion blocks to components
   - [x] - text
