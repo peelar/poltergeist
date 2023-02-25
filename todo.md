@@ -10,7 +10,7 @@
 - map Notion blocks to components
   - [x] - text
   - [x] - headings
-  - [ ] - bulleted list
+  - [x] - bulleted list
   - [ ] - code
   - [ ] - todolist
   - [ ] - numbered list

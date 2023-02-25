@@ -7,6 +7,12 @@ const notionClientLogger = logger.child({ module: "notion" });
 export class NotionClient {
   private client: Client;
   constructor() {
+    if (!import.meta.env.NOTION_API_TOKEN) {
+      throw new Error(
+        "You must provide NOTION_API_TOKEN as env var. See .env.example"
+      );
+    }
+
     this.client = new Client({
       auth: import.meta.env.NOTION_API_TOKEN,
     });
@@ -14,14 +20,20 @@ export class NotionClient {
 
   async getPosts() {
     try {
+      if (!import.meta.env.NOTION_DATABASE_ID) {
+        throw new Error(
+          "You must provide NOTION_DATABASE_ID as env var. See .env.example"
+        );
+      }
+
       const response = await this.client.databases.query({
         database_id: import.meta.env.NOTION_DATABASE_ID,
       });
 
-      notionClientLogger.debug({ response }, "Returning posts");
+      notionClientLogger.trace({ response }, "Returning posts");
       return createSuccessResponse(response);
     } catch (error: unknown) {
-      notionClientLogger.debug({ error }, "Failed to get posts");
+      notionClientLogger.error({ error }, "Failed to get posts");
       return createFailureResponse("Something went wrong", "UNKNOWN");
     }
   }
@@ -30,10 +42,10 @@ export class NotionClient {
       const response = await this.client.pages.retrieve({
         page_id: pageId,
       });
-      notionClientLogger.debug({ response }, "Returning post");
+      notionClientLogger.trace({ response }, "Returning post");
       return createSuccessResponse(response);
     } catch (error: unknown) {
-      notionClientLogger.debug({ error }, "Failed to get blog post");
+      notionClientLogger.error({ error }, "Failed to get blog post");
       return createFailureResponse("Something went wrong", "UNKNOWN");
     }
   }
@@ -44,9 +56,10 @@ export class NotionClient {
         block_id: pageId,
       });
 
+      notionClientLogger.info({ response }, "Returning blocks");
       return createSuccessResponse(response);
     } catch (error: unknown) {
-      notionClientLogger.debug({ error }, "Failed to get blog post blocks");
+      notionClientLogger.error({ error }, "Failed to get blog post blocks");
       return createFailureResponse("Something went wrong", "UNKNOWN");
     }
   }

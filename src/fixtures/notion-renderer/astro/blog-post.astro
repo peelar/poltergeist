@@ -1,5 +1,5 @@
 ---
-import type { Block, NotionColor } from "..";
+import { Block, getBlockStyleProps, NotionColor } from "..";
 
 const colorMap: Record<
   NotionColor,
@@ -26,6 +26,22 @@ const colorMap: Record<
   red_background: { color: "white", backgroundColor: "red" },
 };
 
+const matchStylePropsToStyles = (block: Block) => {
+  const styles = getBlockStyleProps(block);
+
+  const styleProps = styles
+    ? {
+        color: colorMap[styles.color].color,
+        backgroundColor: colorMap[styles.color].backgroundColor,
+        fontWeight: styles.bold ? "bold" : "normal",
+        fontStyle: styles.italic ? "italic" : "normal",
+        textDecoration: styles.underline ? "underline" : "none",
+      }
+    : {};
+
+  return styleProps;
+};
+
 type Props = {
   blocks: Block[];
 };
@@ -36,14 +52,7 @@ const blocks = Astro.props.blocks;
 <article>
   {
     blocks.map((block) => {
-      const { style } = block;
-      const styleProps = {
-        color: colorMap[style.color].color,
-        backgroundColor: colorMap[style.color].backgroundColor,
-        fontWeight: style.bold ? "bold" : "normal",
-        fontStyle: style.italic ? "italic" : "normal",
-        textDecoration: style.underline ? "underline" : "none",
-      };
+      const styleProps = matchStylePropsToStyles(block);
       if (block.type === "paragraph") {
         return <p style={styleProps}>{block.content}</p>;
       }
@@ -58,6 +67,17 @@ const blocks = Astro.props.blocks;
 
       if (block.type === "heading" && block.level === 3) {
         return <h3 style={styleProps}>{block.content}</h3>;
+      }
+
+      if (block.type === "unorderedList") {
+        return (
+          <ul>
+            {block.items.map((listItem) => {
+              const listItemStyles = matchStylePropsToStyles(listItem);
+              return <li style={listItemStyles}>{listItem.content}</li>;
+            })}
+          </ul>
+        );
       }
     })
   }

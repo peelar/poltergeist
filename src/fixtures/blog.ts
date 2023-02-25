@@ -26,10 +26,10 @@ export class Blog {
         return { params: { slug }, props: { id: page.id } };
       });
 
-      blogLogger.debug({ paths }, "Returning paths");
+      blogLogger.trace({ paths }, "Returning paths");
       return createSuccessResponse(paths);
     } catch (error) {
-      blogLogger.debug({ error }, "Failed to get posts paths");
+      blogLogger.error({ error }, "Failed to get posts paths");
       return createFailureResponse("Something went wrong", "UNKNOWN");
     }
   }
@@ -42,7 +42,7 @@ export class Blog {
       }
 
       if (!isFullPage(postResponse.data)) {
-        blogLogger.debug("Failed to read blog post");
+        blogLogger.error("Failed to read blog post");
         return createFailureResponse("Something went wrong", "UNKNOWN");
       }
 
@@ -54,10 +54,10 @@ export class Blog {
       }
 
       const blocks = blocksResponse.data.results.filter(isFullBlock);
-      blogLogger.debug({ page, blocks }, "Returning blog post data");
+      blogLogger.trace({ page, blocks }, "Returning blog post data");
       return createSuccessResponse({ page, blocks });
     } catch (error) {
-      blogLogger.debug({ error }, "Failed to get blog post");
+      blogLogger.error({ error }, "Failed to get blog post");
       return createFailureResponse("Something went wrong", "UNKNOWN");
     }
   }
