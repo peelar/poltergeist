@@ -15,7 +15,7 @@ The 🦍 idea is: you choose where you manage your content (Notion/Obsidian/VSCo
 
 See [todo](todo.md) for the current status.
 
-## Database
+## Development
 
 Poltergeist uses [Notion](https://notion.so) as a blog post database. You have to point to a database in your Notion workspace through an env var `NOTION_DATABASE_ID`.
 
