@@ -170,6 +170,19 @@ export const mapNotionBlocks = (
         return [...prev, factory.quote(b?.plain_text, b?.annotations)];
       }
 
+      case "image": {
+        const b = block.image;
+
+        if (!b) {
+          return prev;
+        }
+
+        const url = b.type === "external" ? b.external.url : b.file.url;
+        const caption = b.caption?.[0]?.plain_text;
+
+        return [...prev, factory.image(url, caption)];
+      }
+
       default: {
         notionRendererLogger.error({ block }, "Unsupported block type");
         throw new Error("Unsupported block type");

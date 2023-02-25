@@ -57,6 +57,12 @@ type Quote = MakeBlockWithStyles<{
   content: string;
 }>;
 
+type Image = {
+  type: "image";
+  url: string;
+  caption: string;
+};
+
 export type Block =
   | Paragraph
   | Heading
@@ -65,13 +71,15 @@ export type Block =
   | OrderedList
   | TodoListItem
   | TodoList
-  | Quote;
+  | Quote
+  | Image;
 
 export const getBlockStyleProps = (block: Block): StyleProps | undefined => {
   if (
     block.type !== "unorderedList" &&
     block.type !== "orderedList" &&
-    block.type !== "todoList"
+    block.type !== "todoList" &&
+    block.type !== "image"
   ) {
     return block.style;
   }
@@ -148,6 +156,14 @@ const quoteFactory = (text: string, style: StyleProps): Quote => {
   };
 };
 
+const imageFactory = (url: string, caption: string): Image => {
+  return {
+    type: "image",
+    url,
+    caption,
+  };
+};
+
 const factory = {
   paragraph: paragraphFactory,
   heading1: (text: string, style: StyleProps) => headingFactory(1, text, style),
@@ -160,6 +176,7 @@ const factory = {
   orderedList: orderedListFactory,
   todoList: todoListFactory,
   quote: quoteFactory,
+  image: imageFactory,
 };
 
 export default factory;

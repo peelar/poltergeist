@@ -14,8 +14,9 @@
   - [x] - text
   - [x] - headings
   - [x] - bulleted list
-  - [ ] - code
+  - [x] - image
   - [x] - todolist
   - [x] - numbered list
+  - [ ] - code
   - [ ] - toggle list
   - [ ] - quote
