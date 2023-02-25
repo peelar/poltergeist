@@ -1,0 +1,31 @@
+---
+import { isFullPage } from "@notionhq/client";
+import { Notion } from "../../lib/notion";
+import type { InferGetStaticPathsResult } from "../../types";
+
+export const getStaticPaths = async () => {
+  const client = new Notion();
+  const response = await client.getPosts();
+
+  if (!response.ok) {
+    throw new Error(response.error.message);
+  }
+
+  const pages = response.data.results.filter(isFullPage);
+
+  return pages.map((page) => {
+    const post = page.properties.Post;
+    const slug = post.type === "title" ? post.title?.[0].plain_text : "";
+    return { params: { slug }, props: { id: page.id } };
+  });
+};
+
+type InferedGetStaticPaths = InferGetStaticPathsResult<typeof getStaticPaths>;
+type InferedProps = InferedGetStaticPaths["props"];
+
+const { id } = Astro.props as InferedProps;
+---
+
+<main>
+  <h1>Page: {id}</h1>
+</main>
