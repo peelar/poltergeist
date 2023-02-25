@@ -42,7 +42,17 @@ type UnorderedList = {
   items: ListItem[];
 };
 
-export type Block = Paragraph | Heading | UnorderedList | ListItem;
+type OrderedList = {
+  type: "orderedList";
+  items: ListItem[];
+};
+
+export type Block =
+  | Paragraph
+  | Heading
+  | UnorderedList
+  | ListItem
+  | OrderedList;
 
 const paragraphFactory = (text: string, style: StyleProps): Paragraph => {
   return {
@@ -73,15 +83,22 @@ const listItemFactory = (text: string, style: StyleProps): ListItem => {
   };
 };
 
-const listFactory = (items: ListItem[]): UnorderedList => {
+const unorderedListFactory = (items: ListItem[]): UnorderedList => {
   return {
     type: "unorderedList",
     items,
   };
 };
 
+const orderedListFactory = (items: ListItem[]): OrderedList => {
+  return {
+    type: "orderedList",
+    items,
+  };
+};
+
 export const getBlockStyleProps = (block: Block): StyleProps | undefined => {
-  if (block.type !== "unorderedList") {
+  if (block.type !== "unorderedList" && block.type !== "orderedList") {
     return block.style;
   }
 };
@@ -144,10 +161,6 @@ export const mapNotionBlocks = (
 
         // 1. Check if the previous item is a list
         if (previousBlock?.type === "unorderedList") {
-          notionRendererLogger.debug(
-            { previousBlock, currentBlock: b },
-            "Previous block is a list"
-          );
           // 2. If it is, add the current item to the list
           return [
             ...prev.slice(0, prevIndex),
@@ -162,13 +175,43 @@ export const mapNotionBlocks = (
         }
 
         // 3. If it isn't, create a new list and add the current item to it
-        notionRendererLogger.debug(
-          { previousBlock },
-          "Previous block is not a list"
-        );
         return [
           ...prev,
-          listFactory([listItemFactory(b?.plain_text, b?.annotations)]),
+          unorderedListFactory([
+            listItemFactory(b?.plain_text, b?.annotations),
+          ]),
+        ];
+      }
+
+      case "numbered_list_item": {
+        const b = block.numbered_list_item.rich_text[0];
+
+        if (!b) {
+          return prev;
+        }
+
+        const prevIndex = prev.length - 1;
+        const previousBlock = prev[prevIndex];
+
+        // 1. Check if the previous item is a list
+        if (previousBlock?.type === "orderedList") {
+          // 2. If it is, add the current item to the list
+          return [
+            ...prev.slice(0, prevIndex),
+            {
+              ...previousBlock,
+              items: [
+                ...previousBlock.items,
+                listItemFactory(b?.plain_text, b?.annotations),
+              ],
+            },
+          ];
+        }
+
+        // 3. If it isn't, create a new list and add the current item to it
+        return [
+          ...prev,
+          orderedListFactory([listItemFactory(b?.plain_text, b?.annotations)]),
         ];
       }
 

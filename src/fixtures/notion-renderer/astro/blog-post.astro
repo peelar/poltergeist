@@ -79,6 +79,17 @@ const blocks = Astro.props.blocks;
           </ul>
         );
       }
+
+      if (block.type === "orderedList") {
+        return (
+          <ol>
+            {block.items.map((listItem) => {
+              const listItemStyles = matchStylePropsToStyles(listItem);
+              return <li style={listItemStyles}>{listItem.content}</li>;
+            })}
+          </ol>
+        );
+      }
     })
   }
 </article>

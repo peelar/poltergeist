@@ -13,6 +13,6 @@
   - [x] - bulleted list
   - [ ] - code
   - [ ] - todolist
-  - [ ] - numbered list
+  - [x] - numbered list
   - [ ] - toggle list
   - [ ] - quote
