@@ -1,5 +1,5 @@
 ---
-import { Block, getBlockStyleProps, NotionColor } from "..";
+import { Block, getBlockStyleProps, NotionColor } from "../blocks";
 
 const colorMap: Record<
   NotionColor,
@@ -88,6 +88,26 @@ const blocks = Astro.props.blocks;
               return <li style={listItemStyles}>{listItem.content}</li>;
             })}
           </ol>
+        );
+      }
+
+      if (block.type === "todoList") {
+        return (
+          <ul>
+            {block.items.map((listItem) => {
+              const listItemStyles = matchStylePropsToStyles(listItem);
+              return (
+                <li
+                  style={{
+                    ...listItemStyles,
+                    textDecoration: listItem.checked
+                      ? "line-through"
+                      : "initial",
+                  }}
+                >{`${listItem.content}`}</li>
+              );
+            })}
+          </ul>
         );
       }
     })

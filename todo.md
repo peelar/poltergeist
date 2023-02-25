@@ -12,7 +12,7 @@
   - [x] - headings
   - [x] - bulleted list
   - [ ] - code
-  - [ ] - todolist
+  - [x] - todolist
   - [x] - numbered list
   - [ ] - toggle list
   - [ ] - quote
