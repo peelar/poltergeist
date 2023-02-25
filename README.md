@@ -1,6 +1,7 @@
 <div align="center">
-<img src="https://user-images.githubusercontent.com/44495184/221354546-4cf2e597-ebff-4c26-9539-d3d0536f2fcf.png" />
+<img src="https://user-images.githubusercontent.com/44495184/221377941-7c48e06f-4ede-4608-a64b-77fa3146d019.png" />
 </div>
+
 
 <div align="center">
   <h1>Poltergeist</h1>
