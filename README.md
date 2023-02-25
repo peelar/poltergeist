@@ -1,4 +1,5 @@
 # Poltergeist
+![Frame 1](https://user-images.githubusercontent.com/44495184/221351962-5749dfd3-8f38-4a86-8d3f-e00e4d6f4701.png)
 
 Poltergeist is [Astro](https://astro.build/) + [Notion](https://notion.so) based content platform.
 
