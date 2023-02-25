@@ -12,5 +12,9 @@
 	"dependencies": {
 		"@notionhq/client": "^2.2.3",
 		"astro": "^2.0.15"
+	},
+	"devDependencies": {
+		"pino": "^8.11.0",
+		"pino-pretty": "^9.4.0"
 	}
 }

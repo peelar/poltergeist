@@ -1,31 +1,35 @@
 ---
-import { isFullPage } from "@notionhq/client";
-import { Notion } from "../../lib/notion";
+import { Blog } from "../../fixtures/blog";
+import { mapNotionBlocks } from "../../fixtures/notion-renderer";
+import BlogPost from "../../fixtures/notion-renderer/astro/blog-post.astro";
 import type { InferGetStaticPathsResult } from "../../types";
 
 export const getStaticPaths = async () => {
-  const client = new Notion();
-  const response = await client.getPosts();
+  const blog = new Blog();
+  const response = await blog.getPostsPaths();
 
   if (!response.ok) {
     throw new Error(response.error.message);
   }
 
-  const pages = response.data.results.filter(isFullPage);
-
-  return pages.map((page) => {
-    const post = page.properties.Post;
-    const slug = post.type === "title" ? post.title?.[0].plain_text : "";
-    return { params: { slug }, props: { id: page.id } };
-  });
+  return response.data;
 };
 
 type InferedGetStaticPaths = InferGetStaticPathsResult<typeof getStaticPaths>;
 type InferedProps = InferedGetStaticPaths["props"];
 
 const { id } = Astro.props as InferedProps;
+const blog = new Blog();
+const response = await blog.getPost(id);
+
+if (!response.ok) {
+  throw new Error("Page not found");
+}
+
+const blocks = mapNotionBlocks(response.data.blocks);
 ---
 
 <main>
   <h1>Page: {id}</h1>
+  <BlogPost blocks={blocks} />
 </main>

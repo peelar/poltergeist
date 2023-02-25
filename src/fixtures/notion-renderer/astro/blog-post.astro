@@ -1,0 +1,64 @@
+---
+import type { Block, NotionColor } from "..";
+
+const colorMap: Record<
+  NotionColor,
+  { color: string; backgroundColor: string }
+> = {
+  default: { color: "black", backgroundColor: "inherit" },
+  gray: { color: "gray", backgroundColor: "inherit" },
+  brown: { color: "brown", backgroundColor: "inherit" },
+  orange: { color: "orange", backgroundColor: "inherit" },
+  yellow: { color: "yellow", backgroundColor: "inherit" },
+  green: { color: "green", backgroundColor: "inherit" },
+  blue: { color: "blue", backgroundColor: "inherit" },
+  purple: { color: "purple", backgroundColor: "inherit" },
+  pink: { color: "pink", backgroundColor: "inherit" },
+  red: { color: "red", backgroundColor: "inherit" },
+  gray_background: { color: "white", backgroundColor: "gray" },
+  brown_background: { color: "white", backgroundColor: "brown" },
+  orange_background: { color: "white", backgroundColor: "orange" },
+  yellow_background: { color: "white", backgroundColor: "yellow" },
+  green_background: { color: "white", backgroundColor: "green" },
+  blue_background: { color: "white", backgroundColor: "blue" },
+  purple_background: { color: "white", backgroundColor: "purple" },
+  pink_background: { color: "white", backgroundColor: "pink" },
+  red_background: { color: "white", backgroundColor: "red" },
+};
+
+type Props = {
+  blocks: Block[];
+};
+
+const blocks = Astro.props.blocks;
+---
+
+<article>
+  {
+    blocks.map((block) => {
+      const { style } = block;
+      const styleProps = {
+        color: colorMap[style.color].color,
+        backgroundColor: colorMap[style.color].backgroundColor,
+        fontWeight: style.bold ? "bold" : "normal",
+        fontStyle: style.italic ? "italic" : "normal",
+        textDecoration: style.underline ? "underline" : "none",
+      };
+      if (block.type === "paragraph") {
+        return <p style={styleProps}>{block.content}</p>;
+      }
+
+      if (block.type === "heading" && block.level === 1) {
+        return <h1 style={styleProps}>{block.content}</h1>;
+      }
+
+      if (block.type === "heading" && block.level === 2) {
+        return <h2 style={styleProps}>{block.content}</h2>;
+      }
+
+      if (block.type === "heading" && block.level === 3) {
+        return <h3 style={styleProps}>{block.content}</h3>;
+      }
+    })
+  }
+</article>
