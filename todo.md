@@ -7,6 +7,9 @@
 - [ ] - investigate generating markdown on demand (e.g. from CI/CD)
 - [x] - add draft support
 - [ ] - add metadata management from Notion
+- [ ] - add super cool intro page
+- [ ] - add basic styles
+- [ ] - add write separate markdown files
 - map Notion blocks to components
   - [x] - text
   - [x] - headings

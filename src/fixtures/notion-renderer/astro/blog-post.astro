@@ -110,6 +110,10 @@ const blocks = Astro.props.blocks;
           </ul>
         );
       }
+
+      if (block.type === "quote") {
+        return <blockquote style={styleProps}>{block.content}</blockquote>;
+      }
     })
   }
 </article>

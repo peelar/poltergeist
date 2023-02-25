@@ -160,6 +160,16 @@ export const mapNotionBlocks = (
         ];
       }
 
+      case "quote": {
+        const b = block.quote.rich_text[0];
+
+        if (!b) {
+          return prev;
+        }
+
+        return [...prev, factory.quote(b?.plain_text, b?.annotations)];
+      }
+
       default: {
         notionRendererLogger.error({ block }, "Unsupported block type");
         throw new Error("Unsupported block type");

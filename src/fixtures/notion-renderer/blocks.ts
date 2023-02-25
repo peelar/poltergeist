@@ -52,6 +52,11 @@ type TodoList = {
   items: TodoListItem[];
 };
 
+type Quote = MakeBlockWithStyles<{
+  type: "quote";
+  content: string;
+}>;
+
 export type Block =
   | Paragraph
   | Heading
@@ -59,7 +64,8 @@ export type Block =
   | ListItem
   | OrderedList
   | TodoListItem
-  | TodoList;
+  | TodoList
+  | Quote;
 
 export const getBlockStyleProps = (block: Block): StyleProps | undefined => {
   if (
@@ -134,6 +140,14 @@ const todoListFactory = (items: TodoListItem[]): TodoList => {
   };
 };
 
+const quoteFactory = (text: string, style: StyleProps): Quote => {
+  return {
+    type: "quote",
+    content: text,
+    style,
+  };
+};
+
 const factory = {
   paragraph: paragraphFactory,
   heading1: (text: string, style: StyleProps) => headingFactory(1, text, style),
@@ -145,6 +159,7 @@ const factory = {
   unorderedList: unorderedListFactory,
   orderedList: orderedListFactory,
   todoList: todoListFactory,
+  quote: quoteFactory,
 };
 
 export default factory;
