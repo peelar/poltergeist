@@ -120,6 +120,10 @@ const blocks = Astro.props.blocks;
         // * problem: when I get images from Notion, there is no width & height
         return <img src={block.url} alt={block.caption} />;
       }
+
+      if (block.type === "divider") {
+        return <hr />;
+      }
     })
   }
 </article>

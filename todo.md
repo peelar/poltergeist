@@ -17,6 +17,7 @@
   - [x] - image
   - [x] - todolist
   - [x] - numbered list
+  - [x] - quote
+  - [x] - divider
   - [ ] - code
   - [ ] - toggle list
-  - [ ] - quote

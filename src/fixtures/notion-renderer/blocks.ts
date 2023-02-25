@@ -63,6 +63,10 @@ type Image = {
   caption: string;
 };
 
+type Divider = {
+  type: "divider";
+};
+
 export type Block =
   | Paragraph
   | Heading
@@ -72,14 +76,16 @@ export type Block =
   | TodoListItem
   | TodoList
   | Quote
-  | Image;
+  | Image
+  | Divider;
 
 export const getBlockStyleProps = (block: Block): StyleProps | undefined => {
   if (
     block.type !== "unorderedList" &&
     block.type !== "orderedList" &&
     block.type !== "todoList" &&
-    block.type !== "image"
+    block.type !== "image" &&
+    block.type !== "divider"
   ) {
     return block.style;
   }
@@ -164,6 +170,12 @@ const imageFactory = (url: string, caption: string): Image => {
   };
 };
 
+const dividerFactory = (): Divider => {
+  return {
+    type: "divider",
+  };
+};
+
 const factory = {
   paragraph: paragraphFactory,
   heading1: (text: string, style: StyleProps) => headingFactory(1, text, style),
@@ -177,6 +189,7 @@ const factory = {
   todoList: todoListFactory,
   quote: quoteFactory,
   image: imageFactory,
+  divider: dividerFactory,
 };
 
 export default factory;

@@ -172,15 +172,14 @@ export const mapNotionBlocks = (
 
       case "image": {
         const b = block.image;
-
-        if (!b) {
-          return prev;
-        }
-
         const url = b.type === "external" ? b.external.url : b.file.url;
         const caption = b.caption?.[0]?.plain_text;
 
         return [...prev, factory.image(url, caption)];
+      }
+
+      case "divider": {
+        return [...prev, factory.divider()];
       }
 
       default: {
