@@ -19,7 +19,7 @@ See [todo](todo.md) for the current status.
 
 Poltergeist uses [Notion](https://notion.so) as a blog post database. You have to point to a database in your Notion workspace through an env var `NOTION_DATABASE_ID`.
 
-You have to provide names of some key properties in your database through env vars:
+You also have to provide names of some key properties in your database through env vars:
 
 - `PUBLISHED_ATTRIBUTE`: checkbox. Indicates whether the post is published or not.
 
