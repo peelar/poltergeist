@@ -13,13 +13,15 @@ export const mapNotionBlocks = (
   const blocks = notionBlocks.reduce((prev, block) => {
     switch (block.type) {
       case "paragraph": {
-        const b = block.paragraph.rich_text[0];
+        const text = block.paragraph.rich_text;
 
-        // todo: refactor
-        if (!b) {
-          return prev;
+        if (!text.length) {
+          return [...prev, factory.break()];
         }
-        return [...prev, factory.paragraph(b?.plain_text, b?.annotations)];
+
+        const b = text[0];
+
+        return [...prev, factory.paragraph(b.plain_text, b.annotations)];
       }
 
       case "heading_1": {
@@ -28,7 +30,7 @@ export const mapNotionBlocks = (
         if (!b) {
           return prev;
         }
-        return [...prev, factory.heading1(b?.plain_text, b?.annotations)];
+        return [...prev, factory.heading1(b.plain_text, b.annotations)];
       }
 
       case "heading_2": {
@@ -37,7 +39,7 @@ export const mapNotionBlocks = (
         if (!b) {
           return prev;
         }
-        return [...prev, factory.heading2(b?.plain_text, b?.annotations)];
+        return [...prev, factory.heading2(b.plain_text, b.annotations)];
       }
 
       case "heading_3": {
@@ -47,7 +49,7 @@ export const mapNotionBlocks = (
           return prev;
         }
 
-        return [...prev, factory.heading3(b?.plain_text, b?.annotations)];
+        return [...prev, factory.heading3(b.plain_text, b.annotations)];
       }
 
       case "bulleted_list_item": {
@@ -69,7 +71,7 @@ export const mapNotionBlocks = (
               ...previousBlock,
               items: [
                 ...previousBlock.items,
-                factory.listItem(b?.plain_text, b?.annotations),
+                factory.listItem(b.plain_text, b.annotations),
               ],
             },
           ];
@@ -79,7 +81,7 @@ export const mapNotionBlocks = (
         return [
           ...prev,
           factory.unorderedList([
-            factory.listItem(b?.plain_text, b?.annotations),
+            factory.listItem(b.plain_text, b.annotations),
           ]),
         ];
       }
@@ -103,7 +105,7 @@ export const mapNotionBlocks = (
               ...previousBlock,
               items: [
                 ...previousBlock.items,
-                factory.listItem(b?.plain_text, b?.annotations),
+                factory.listItem(b.plain_text, b.annotations),
               ],
             },
           ];
@@ -112,9 +114,7 @@ export const mapNotionBlocks = (
         // 3. If it isn't, create a new list and add the current item to it
         return [
           ...prev,
-          factory.orderedList([
-            factory.listItem(b?.plain_text, b?.annotations),
-          ]),
+          factory.orderedList([factory.listItem(b.plain_text, b.annotations)]),
         ];
       }
 
@@ -140,7 +140,7 @@ export const mapNotionBlocks = (
                 factory.todoItem(
                   b.plain_text,
                   block.to_do.checked,
-                  b?.annotations
+                  b.annotations
                 ),
               ],
             },
@@ -151,11 +151,7 @@ export const mapNotionBlocks = (
         return [
           ...prev,
           factory.todoList([
-            factory.todoItem(
-              b?.plain_text,
-              block.to_do.checked,
-              b?.annotations
-            ),
+            factory.todoItem(b.plain_text, block.to_do.checked, b.annotations),
           ]),
         ];
       }
@@ -167,7 +163,7 @@ export const mapNotionBlocks = (
           return prev;
         }
 
-        return [...prev, factory.quote(b?.plain_text, b?.annotations)];
+        return [...prev, factory.quote(b.plain_text, b.annotations)];
       }
 
       case "image": {
@@ -180,6 +176,13 @@ export const mapNotionBlocks = (
 
       case "divider": {
         return [...prev, factory.divider()];
+      }
+
+      case "code": {
+        const b = block.code;
+        notionRendererLogger.debug({ codeBlock: b }, "Code block");
+
+        return [...prev, factory.code("Hello World")];
       }
 
       default: {

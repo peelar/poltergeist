@@ -111,18 +111,19 @@ const blocks = Astro.props.blocks;
         );
       }
 
-      if (block.type === "quote") {
-        return <blockquote style={styleProps}>{block.content}</blockquote>;
+      // ! bug: breaks when I change <div></div> to <div />
+      if (block.type === "divider") {
+        return <div>Divider</div>;
+      }
+
+      if (block.type === "break") {
+        return <div>Break</div>;
       }
 
       if (block.type === "image") {
         // todo: figure out what is the best way to handle images
         // * problem: when I get images from Notion, there is no width & height
         return <img src={block.url} alt={block.caption} />;
-      }
-
-      if (block.type === "divider") {
-        return <hr />;
       }
     })
   }

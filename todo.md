@@ -10,6 +10,7 @@
 - [ ] - add super cool intro page
 - [ ] - add basic styles
 - [ ] - add write separate markdown files
+- [ ] - handle links
 - map Notion blocks to components
   - [x] - text
   - [x] - headings
@@ -19,5 +20,6 @@
   - [x] - numbered list
   - [x] - quote
   - [x] - divider
-  - [ ] - code
+  - [x] - code
+  - [x] - break
   - [ ] - toggle list
