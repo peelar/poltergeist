@@ -4,7 +4,7 @@
 - [x] - add Notion Client
 - [x] - add notion renderer
 - [x] - add basic Astro blog post renderer
-- [ ] - add React renderet
+- [ ] - add React renderer
 - [ ] - investigate generating markdown on demand (e.g. from CI/CD)
 - [x] - add draft support
 - [ ] - add metadata management from Notion
