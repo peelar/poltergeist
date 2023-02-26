@@ -113,12 +113,13 @@ const { blocks, title } = Astro.props.post;
         );
       }
 
-      // ! bug: breaks when I change <div></div> to <div />
+      // ! bug: breaks when changed to any self closing tag (e.g. <hr />)
       if (block.type === "divider") {
         return <div>Divider</div>;
       }
 
       if (block.type === "break") {
+        // ! bug: breaks when changed to any self closing tag (e.g. <br />)
         return <div>Break</div>;
       }
 
