@@ -1,7 +1,6 @@
 ---
-import { Blog } from "../../fixtures/blog";
-import { mapNotionBlocks } from "../../fixtures/notion-renderer";
-import BlogPost from "../../fixtures/notion-renderer/astro/blog-post.astro";
+import { Blog } from "../../../poltergeist/blog";
+import BlogPost from "../../../poltergeist/notion/blocks/astro/blog-post.astro";
 import type { InferGetStaticPathsResult } from "../../types";
 
 export const getStaticPaths = async () => {
@@ -26,10 +25,9 @@ if (!response.ok) {
   throw new Error("Page not found");
 }
 
-const blocks = mapNotionBlocks(response.data.blocks);
+const post = response.data;
 ---
 
 <main>
-  <h1>Page: {id}</h1>
-  <BlogPost blocks={blocks} />
+  <BlogPost post={post} />
 </main>

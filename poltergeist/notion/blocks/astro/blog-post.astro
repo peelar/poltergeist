@@ -1,5 +1,6 @@
 ---
-import { Block, getBlockStyleProps, NotionColor } from "../blocks";
+import type { BlogPost } from "../../../blog";
+import { Block, getBlockStyleProps, NotionColor } from "../factory";
 
 const colorMap: Record<
   NotionColor,
@@ -43,13 +44,14 @@ const matchStylePropsToStyles = (block: Block) => {
 };
 
 type Props = {
-  blocks: Block[];
+  post: BlogPost;
 };
 
-const blocks = Astro.props.blocks;
+const { blocks, title } = Astro.props.post;
 ---
 
 <article>
+  <h1>{title}</h1>
   {
     blocks.map((block) => {
       const styleProps = matchStylePropsToStyles(block);

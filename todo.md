@@ -1,18 +1,21 @@
 # Todo
 
+## MVP
+
 - [x] - manage Notion instance by env
 - [x] - add Notion Client
 - [x] - add notion renderer
 - [x] - add basic Astro blog post renderer
-- [ ] - add React renderer
-- [ ] - add mailing
-- [ ] - investigate generating markdown on demand (e.g. from CI/CD)
 - [x] - add draft support
-- [ ] - add metadata management from Notion
-- [ ] - add super cool intro page
-- [ ] - add basic styles
-- [ ] - add write separate markdown files
-- [ ] - handle links
+- [ ] - list of posts
+- [ ] - React renderer
+- [ ] - code snippets
+- [x] super cool intro page with:
+  - [x] - poltergeist logo
+  - [x] - configuration status (whether API key is found or not)
+  - [x] - list of posts
+- [ ] - basic styles
+- [ ] - write separate markdown files
 - map Notion blocks to components
   - [x] - text
   - [x] - headings
@@ -24,4 +27,11 @@
   - [x] - divider
   - [x] - code
   - [x] - break
+  - [ ] - links
   - [ ] - toggle list
+
+## Post MVP
+
+- [ ] - add mailing
+- [ ] - investigate generating markdown on demand (e.g. from CI/CD)
+- [ ] - add metadata management from Notion

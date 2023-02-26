@@ -1,6 +1,9 @@
 import { Client } from "@notionhq/client";
 import { logger } from "../logger";
-import { createFailureResponse, createSuccessResponse } from "../lib/api";
+import {
+  createFailureResponse,
+  createSuccessResponse,
+} from "../../src/lib/api";
 
 const notionClientLogger = logger.child({ module: "notion" });
 

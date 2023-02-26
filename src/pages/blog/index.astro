@@ -1,0 +1,31 @@
+---
+import { Blog } from "../../../poltergeist/blog";
+
+const blog = new Blog();
+const response = await blog.getPostsPaths();
+
+if (!response.ok) {
+  throw new Error(response.error.message);
+}
+
+const posts = response.data.map((post) => {
+  return {
+    title: post.props.title,
+    slug: post.params.slug,
+  };
+});
+---
+
+<main class="intro">
+  <h1>Blog</h1>
+  <h2>Posts:</h2>
+  <ul>
+    {
+      posts.map((post) => (
+        <li>
+          <a href={`/blog/${post.slug}`}>{post.title}</a>
+        </li>
+      ))
+    }
+  </ul>
+</main>

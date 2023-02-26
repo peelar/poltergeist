@@ -21,6 +21,6 @@ Poltergeist uses [Notion](https://notion.so) as a blog post database. You have t
 
 You also have to provide names of some key properties in your database through env vars:
 
-- `PUBLISHED_ATTRIBUTE`: checkbox. Indicates whether the post is published or not.
+- `PUBLISHED_PROPERTY`: checkbox. Indicates whether the post is published or not.
 
-Blog posts with `PUBLISHED_ATTRIBUTE` set to `false` will only be rendered in development.
+Blog posts with `PUBLISHED_PROPERTY` set to `false` will only be rendered in development.
