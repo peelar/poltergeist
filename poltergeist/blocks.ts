@@ -2,6 +2,8 @@ import type { ParagraphBlockObjectResponse } from "@notionhq/client/build/src/ap
 
 export type NotionColor = ParagraphBlockObjectResponse["paragraph"]["color"];
 
+// todo: change StyleProps to not rely on Notion types
+// so that blocks can be agnostic of provider
 type StyleProps = {
   color: NotionColor;
   bold: boolean;

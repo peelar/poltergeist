@@ -1,10 +1,10 @@
 import { isFullBlock, isFullPage } from "@notionhq/client";
 import { logger } from "./logger";
 import { createFailureResponse, createSuccessResponse } from "../src/lib/api";
-import { NotionClient } from "./notion/client";
+import { NotionClient } from "./notion/notion-client";
 import { POST_PROPERTY, PUBLISHED_PROPERTY, SLUG_PROPERTY } from "./const";
-import type { Block } from "./notion/blocks/factory";
-import { mapNotionBlocks } from "./notion/blocks";
+import type { Block } from "./blocks";
+import { mapNotionBlocks } from "./notion/notion-map-blocks";
 
 const blogLogger = logger.child({ module: "notion" });
 

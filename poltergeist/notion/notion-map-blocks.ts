@@ -1,6 +1,6 @@
 import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
-import { logger } from "../../logger";
-import factory, { type Block } from "./factory";
+import { logger } from "../logger";
+import factory, { type Block } from "../blocks";
 
 const notionRendererLogger = logger.child({ module: "notion-renderer" });
 
