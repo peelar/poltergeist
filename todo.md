@@ -16,6 +16,7 @@
 - [ ] - code snippets
 - [ ] - basic styles
 - [ ] - write separate markdown files
+- [ ] - nested blocks (e.g. list inside a list)
 - map Notion blocks to components
   - [x] - text
   - [x] - headings
