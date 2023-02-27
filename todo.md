@@ -7,11 +7,11 @@
 - [x] - add notion renderer
 - [x] - add basic Astro blog post renderer
 - [x] - add draft support
-- [x] super cool intro page with:
+- [x] - super cool intro page with:
   - [x] - poltergeist logo
   - [x] - configuration status (whether API key is found or not)
   - [x] - list of posts
-- [ ] - list of posts
+- [x] - list of posts
 - [ ] - React renderer
 - [ ] - code snippets
 - [ ] - basic styles
