@@ -36,3 +36,4 @@
 - [ ] - add mailing
 - [ ] - investigate generating markdown on demand (e.g. from CI/CD)
 - [ ] - add metadata management from Notion
+- [ ] - move to monorepo
