@@ -33,7 +33,7 @@ Poltergeist uses [Notion](https://notion.so) as a blog post database. That means
 <summary>2. Set up a Notion database</summary>
 
 1. Go to [Notion](https://notion.so).
-2. Create a new database.
+2. Create a new database. [Here is an official Poltergeist Notion template](https://www.notion.so/6835243851354b718bc35935112b3a31?v=2431081712d542129a585466f7ba0da7&pvs=4) if you need it.
 3. Add the following properties:
    - `Post` (title) - the title of the post. Should point to the post's page.
    - `Published` (checkbox) - indicates whether the post is published or not.
