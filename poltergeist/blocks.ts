@@ -2,7 +2,7 @@ import type { ParagraphBlockObjectResponse } from "@notionhq/client/build/src/ap
 
 export type NotionColor = ParagraphBlockObjectResponse["paragraph"]["color"];
 
-// todo: change StyleProps to not rely on Notion types
+// todo: change StyleProps to not rely on Notion types, this file is meant to be platform-agnostic
 // so that blocks can be agnostic of provider
 type StyleProps = {
   color: NotionColor;
@@ -13,25 +13,27 @@ type StyleProps = {
   code: boolean;
 };
 
-type MakeBlockWithStyles<T extends Record<string, any>> = T & {
+export type Text = {
+  type: "text";
+  content: string;
   style: StyleProps;
 };
 
-type Paragraph = MakeBlockWithStyles<{
-  type: "paragraph";
-  content: string;
-}>;
+type RichText = {
+  type: "richText";
+  content: Text[];
+};
 
-type Heading = MakeBlockWithStyles<{
+type Heading = {
   type: "heading";
   level: 1 | 2 | 3;
-  content: string;
-}>;
+  richText: RichText;
+};
 
-type ListItem = MakeBlockWithStyles<{
+type ListItem = {
   type: "listItem";
-  content: string;
-}>;
+  richText: RichText;
+};
 
 type UnorderedList = {
   type: "unorderedList";
@@ -43,21 +45,21 @@ type OrderedList = {
   items: ListItem[];
 };
 
-type TodoListItem = MakeBlockWithStyles<{
+type TodoListItem = {
   type: "todoListItem";
-  content: string;
+  richText: RichText;
   checked: boolean;
-}>;
+};
 
 type TodoList = {
   type: "todoList";
   items: TodoListItem[];
 };
 
-type Quote = MakeBlockWithStyles<{
+type Quote = {
   type: "quote";
-  content: string;
-}>;
+  richText: RichText;
+};
 
 type Image = {
   type: "image";
@@ -71,7 +73,7 @@ type Divider = {
 
 type Code = {
   type: "code";
-  content: string;
+  richText: RichText;
 };
 
 type Break = {
@@ -79,7 +81,7 @@ type Break = {
 };
 
 export type Block =
-  | Paragraph
+  | Text
   | Heading
   | UnorderedList
   | ListItem
@@ -90,61 +92,50 @@ export type Block =
   | Image
   | Divider
   | Code
-  | Break;
+  | Break
+  | RichText;
 
-export const getBlockStyleProps = (block: Block): StyleProps | undefined => {
-  if (
-    block.type !== "unorderedList" &&
-    block.type !== "orderedList" &&
-    block.type !== "todoList" &&
-    block.type !== "image" &&
-    block.type !== "divider" &&
-    block.type !== "code" &&
-    block.type !== "break"
-  ) {
-    return block.style;
-  }
-};
-
-const paragraphFactory = (text: string, style: StyleProps): Paragraph => {
+const textFactory = (content: string, style: StyleProps): Text => {
   return {
-    type: "paragraph",
-    content: text,
+    type: "text",
+    content,
     style,
   };
 };
 
-const headingFactory = (
-  level: 1 | 2 | 3,
-  text: string,
-  style: StyleProps
-): Heading => {
+const richTextFactory = (content: Text[]): RichText => {
+  return {
+    type: "richText",
+    content,
+  };
+};
+
+const headingFactory = (level: 1 | 2 | 3, text: Text[]): Heading => {
+  const richText = richTextFactory(text);
+
   return {
     type: "heading",
     level,
-    content: text,
-    style,
+    richText,
   };
 };
 
-const listItemFactory = (text: string, style: StyleProps): ListItem => {
+const listItemFactory = (text: Text[]): ListItem => {
+  const richText = richTextFactory(text);
+
   return {
     type: "listItem",
-    content: text,
-    style,
+    richText,
   };
 };
 
-const todoListItemFactory = (
-  text: string,
-  checked: boolean,
-  style: StyleProps
-): TodoListItem => {
+const todoListItemFactory = (text: Text[], checked: boolean): TodoListItem => {
+  const richText = richTextFactory(text);
+
   return {
     type: "todoListItem",
-    content: text,
+    richText,
     checked,
-    style,
   };
 };
 
@@ -169,11 +160,12 @@ const todoListFactory = (items: TodoListItem[]): TodoList => {
   };
 };
 
-const quoteFactory = (text: string, style: StyleProps): Quote => {
+const quoteFactory = (text: Text[]): Quote => {
+  const richText = richTextFactory(text);
+
   return {
     type: "quote",
-    content: text,
-    style,
+    richText,
   };
 };
 
@@ -197,21 +189,22 @@ const breakFactory = (): Break => {
   };
 };
 
-const codeFactory = (text: string): Code => {
+const codeFactory = (text: Text[]): Code => {
+  const richText = richTextFactory(text);
   return {
     type: "code",
-    content: text,
+    richText,
   };
 };
 
-const factory = {
-  paragraph: paragraphFactory,
-  heading1: (text: string, style: StyleProps) => headingFactory(1, text, style),
-  heading2: (text: string, style: StyleProps) => headingFactory(2, text, style),
-  heading3: (text: string, style: StyleProps) => headingFactory(3, text, style),
-  listItem: (text: string, style: StyleProps) => listItemFactory(text, style),
-  todoItem: (text: string, checked: boolean, style: StyleProps) =>
-    todoListItemFactory(text, checked, style),
+export const factory = {
+  text: textFactory,
+  heading1: (text: Text[]) => headingFactory(1, text),
+  heading2: (text: Text[]) => headingFactory(2, text),
+  heading3: (text: Text[]) => headingFactory(3, text),
+  listItem: (text: Text[]) => listItemFactory(text),
+  todoItem: (text: Text[], checked: boolean) =>
+    todoListItemFactory(text, checked),
   unorderedList: unorderedListFactory,
   orderedList: orderedListFactory,
   todoList: todoListFactory,
@@ -220,6 +213,5 @@ const factory = {
   divider: dividerFactory,
   code: codeFactory,
   break: breakFactory,
+  richText: richTextFactory,
 };
-
-export default factory;

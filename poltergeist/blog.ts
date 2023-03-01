@@ -45,13 +45,14 @@ export class Blog {
       });
       blogLogger.trace({ pages }, "Fetched pages");
 
+      // ? Should the Notion blocks processing logic be moved somewhere else?
       const paths = pages.map((page) => {
         const slugProperty = page.properties[SLUG_PROPERTY];
         const postProperty = page.properties[POST_PROPERTY];
 
         const title =
           postProperty.type === "title"
-            ? postProperty.title?.[0].plain_text
+            ? postProperty.title?.map((t) => t.plain_text).join(" ")
             : "";
         const slug =
           slugProperty.type === "rich_text"

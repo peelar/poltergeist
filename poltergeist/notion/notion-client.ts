@@ -33,7 +33,7 @@ export class NotionClient {
         database_id: import.meta.env.NOTION_DATABASE_ID,
       });
 
-      notionClientLogger.trace({ response }, "Returning posts");
+      notionClientLogger.info({ response }, "Returning posts");
       return createSuccessResponse(response);
     } catch (error: unknown) {
       notionClientLogger.error({ error }, "Failed to get posts");
@@ -45,7 +45,7 @@ export class NotionClient {
       const response = await this.client.pages.retrieve({
         page_id: pageId,
       });
-      notionClientLogger.trace({ response }, "Returning post");
+      notionClientLogger.info({ response }, "Returning post");
       return createSuccessResponse(response);
     } catch (error: unknown) {
       notionClientLogger.error({ error }, "Failed to get blog post");

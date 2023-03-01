@@ -1,6 +1,6 @@
 ---
+import type { NotionColor, Text as TText } from "../../blocks";
 import type { BlogPost } from "../../blog";
-import { Block, getBlockStyleProps, NotionColor } from "../../blocks";
 
 const colorMap: Record<
   NotionColor,
@@ -27,18 +27,19 @@ const colorMap: Record<
   red_background: { color: "white", backgroundColor: "red" },
 };
 
-const matchStylePropsToStyles = (block: Block) => {
-  const styles = getBlockStyleProps(block);
-
-  const styleProps = styles
-    ? {
-        color: colorMap[styles.color].color,
-        backgroundColor: colorMap[styles.color].backgroundColor,
-        fontWeight: styles.bold ? "bold" : "normal",
-        fontStyle: styles.italic ? "italic" : "normal",
-        textDecoration: styles.underline ? "underline" : "none",
-      }
-    : {};
+const matchStylePropsToStyles = (text: TText) => {
+  const styles = text.style;
+  const styleProps = {
+    color: colorMap[styles.color].color,
+    backgroundColor: colorMap[styles.color].backgroundColor,
+    fontWeight: styles.bold ? "bold" : "normal",
+    fontStyle: styles.italic ? "italic" : "normal",
+    textDecoration: styles.strikethrough
+      ? "line-through"
+      : styles.underline
+      ? "underline"
+      : "none",
+  };
 
   return styleProps;
 };
@@ -54,29 +55,59 @@ const { blocks, title } = Astro.props.post;
   <h1>{title}</h1>
   {
     blocks.map((block) => {
-      const styleProps = matchStylePropsToStyles(block);
-      if (block.type === "paragraph") {
+      if (block.type === "text") {
+        const styleProps = matchStylePropsToStyles(block);
         return <p style={styleProps}>{block.content}</p>;
       }
 
       if (block.type === "heading" && block.level === 1) {
-        return <h1 style={styleProps}>{block.content}</h1>;
+        return (
+          <h1>
+            {block.richText.content.map((text) => {
+              const styleProps = matchStylePropsToStyles(text);
+
+              return <span style={styleProps}>{text.content}</span>;
+            })}
+          </h1>
+        );
       }
 
       if (block.type === "heading" && block.level === 2) {
-        return <h2 style={styleProps}>{block.content}</h2>;
+        return (
+          <h2>
+            {block.richText.content.map((text) => {
+              const styleProps = matchStylePropsToStyles(text);
+
+              return <span style={styleProps}>{text.content}</span>;
+            })}
+          </h2>
+        );
       }
 
       if (block.type === "heading" && block.level === 3) {
-        return <h3 style={styleProps}>{block.content}</h3>;
+        return (
+          <h3>
+            {block.richText.content.map((text) => {
+              const styleProps = matchStylePropsToStyles(text);
+
+              return <span style={styleProps}>{text.content}</span>;
+            })}
+          </h3>
+        );
       }
 
       if (block.type === "unorderedList") {
         return (
           <ul>
             {block.items.map((listItem) => {
-              const listItemStyles = matchStylePropsToStyles(listItem);
-              return <li style={listItemStyles}>{listItem.content}</li>;
+              return (
+                <li>
+                  {listItem.richText.content.map((text) => {
+                    const styleProps = matchStylePropsToStyles(text);
+                    return <span style={styleProps}>{text.content}</span>;
+                  })}
+                </li>
+              );
             })}
           </ul>
         );
@@ -86,8 +117,14 @@ const { blocks, title } = Astro.props.post;
         return (
           <ol>
             {block.items.map((listItem) => {
-              const listItemStyles = matchStylePropsToStyles(listItem);
-              return <li style={listItemStyles}>{listItem.content}</li>;
+              return (
+                <li>
+                  {listItem.richText.content.map((text) => {
+                    const styleProps = matchStylePropsToStyles(text);
+                    return <span style={styleProps}>{text.content}</span>;
+                  })}
+                </li>
+              );
             })}
           </ol>
         );
@@ -97,36 +134,50 @@ const { blocks, title } = Astro.props.post;
         return (
           <ul>
             {block.items.map((listItem) => {
-              const listItemStyles = matchStylePropsToStyles(listItem);
               return (
                 <li
                   style={{
-                    ...listItemStyles,
                     textDecoration: listItem.checked
                       ? "line-through"
                       : "initial",
                   }}
-                >{`${listItem.content}`}</li>
+                >
+                  {listItem.richText.content.map((text) => {
+                    const styleProps = matchStylePropsToStyles(text);
+                    return <span style={styleProps}>{text.content}</span>;
+                  })}
+                </li>
               );
             })}
           </ul>
         );
       }
 
-      // ! bug: breaks when changed to any self closing tag (e.g. <hr />)
+      // https://github.com/withastro/compiler/issues/739
       if (block.type === "divider") {
         return <div>Divider</div>;
       }
 
       if (block.type === "break") {
-        // ! bug: breaks when changed to any self closing tag (e.g. <br />)
+        // https://github.com/withastro/compiler/issues/739
         return <div>Break</div>;
       }
 
       if (block.type === "image") {
-        // todo: figure out what is the best way to handle images
-        // * problem: when I get images from Notion, there is no width & height
-        return <img src={block.url} alt={block.caption} />;
+        // https://github.com/withastro/compiler/issues/739
+        return <div>Image</div>;
+        // return <img src={block.url} alt={block.caption} />;
+      }
+
+      if (block.type === "richText") {
+        return (
+          <p>
+            {block.content.map((text) => {
+              const richTextStyles = matchStylePropsToStyles(text);
+              return <span style={richTextStyles}>{text.content}</span>;
+            })}
+          </p>
+        );
       }
     })
   }

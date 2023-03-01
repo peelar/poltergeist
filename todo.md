@@ -12,11 +12,12 @@
   - [x] - configuration status (whether API key is found or not)
   - [x] - list of posts
 - [x] - list of posts
-- [ ] - React renderer
+- [x] - annotations in the middle of the post
+- [ ] - nested blocks (e.g. list inside a list)
 - [ ] - code snippets
 - [ ] - basic styles
-- [ ] - write separate markdown files
-- [ ] - nested blocks (e.g. list inside a list)
+- [ ] - test combining Notion and local markdown
+- [ ] - React renderer
 - map Notion blocks to components
   - [x] - text
   - [x] - headings
@@ -28,7 +29,6 @@
   - [x] - divider
   - [x] - code
   - [x] - break
-  - [ ] - links
   - [ ] - toggle list
 
 ## Post MVP

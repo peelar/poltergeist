@@ -1,63 +1,81 @@
-import type { BlockObjectResponse } from "@notionhq/client/build/src/api-endpoints";
+import type {
+  BlockObjectResponse,
+  RichTextItemResponse,
+} from "@notionhq/client/build/src/api-endpoints";
+import { factory, type Block, type Text } from "../blocks";
 import { logger } from "../logger";
-import factory, { type Block } from "../blocks";
 
 const notionRendererLogger = logger.child({ module: "notion-renderer" });
+
+const transformNotionRichTextToPoltergeistText = (
+  richText: RichTextItemResponse[]
+): Text[] => {
+  return richText.map((t) => factory.text(t.plain_text, t.annotations));
+};
 
 // todo: test
 export const mapNotionBlocks = (
   notionBlocks: BlockObjectResponse[]
 ): Block[] => {
-  notionRendererLogger.info({ notionBlocks }, "mapNotionBlocks arguments");
+  notionRendererLogger.debug({ notionBlocks }, "mapNotionBlocks arguments");
 
   const blocks = notionBlocks.reduce((prev, block) => {
     switch (block.type) {
       case "paragraph": {
-        const text = block.paragraph.rich_text;
+        const richText = block.paragraph.rich_text;
 
-        if (!text.length) {
+        if (!richText.length) {
           return [...prev, factory.break()];
         }
 
-        const b = text[0];
+        const content = transformNotionRichTextToPoltergeistText(richText);
 
-        return [...prev, factory.paragraph(b.plain_text, b.annotations)];
+        return [...prev, factory.richText(content)];
       }
 
       case "heading_1": {
-        const b = block.heading_1.rich_text[0];
+        const richText = block.heading_1.rich_text;
 
-        if (!b) {
-          return prev;
+        if (!richText.length) {
+          return [...prev, factory.break()];
         }
-        return [...prev, factory.heading1(b.plain_text, b.annotations)];
+
+        const content = transformNotionRichTextToPoltergeistText(richText);
+
+        return [...prev, factory.heading1(content)];
       }
 
       case "heading_2": {
-        const b = block.heading_2.rich_text[0];
+        const richText = block.heading_2.rich_text;
 
-        if (!b) {
-          return prev;
+        if (!richText.length) {
+          return [...prev, factory.break()];
         }
-        return [...prev, factory.heading2(b.plain_text, b.annotations)];
+
+        const content = transformNotionRichTextToPoltergeistText(richText);
+
+        return [...prev, factory.heading2(content)];
       }
 
       case "heading_3": {
-        const b = block.heading_3.rich_text[0];
+        const richText = block.heading_3.rich_text;
 
-        if (!b) {
-          return prev;
+        if (!richText.length) {
+          return [...prev, factory.break()];
         }
+        const content = transformNotionRichTextToPoltergeistText(richText);
 
-        return [...prev, factory.heading3(b.plain_text, b.annotations)];
+        return [...prev, factory.heading3(content)];
       }
 
       case "bulleted_list_item": {
-        const b = block.bulleted_list_item.rich_text[0];
+        const richText = block.bulleted_list_item.rich_text;
 
-        if (!b) {
-          return prev;
+        if (!richText.length) {
+          return [...prev, factory.break()];
         }
+
+        const content = transformNotionRichTextToPoltergeistText(richText);
 
         const prevIndex = prev.length - 1;
         const previousBlock = prev[prevIndex];
@@ -69,29 +87,22 @@ export const mapNotionBlocks = (
             ...prev.slice(0, prevIndex),
             {
               ...previousBlock,
-              items: [
-                ...previousBlock.items,
-                factory.listItem(b.plain_text, b.annotations),
-              ],
+              items: [...previousBlock.items, factory.listItem(content)],
             },
           ];
         }
 
         // 3. If it isn't, create a new list and add the current item to it
-        return [
-          ...prev,
-          factory.unorderedList([
-            factory.listItem(b.plain_text, b.annotations),
-          ]),
-        ];
+        return [...prev, factory.unorderedList([factory.listItem(content)])];
       }
 
       case "numbered_list_item": {
-        const b = block.numbered_list_item.rich_text[0];
+        const richText = block.numbered_list_item.rich_text;
 
-        if (!b) {
-          return prev;
+        if (!richText.length) {
+          return [...prev, factory.break()];
         }
+        const content = transformNotionRichTextToPoltergeistText(richText);
 
         const prevIndex = prev.length - 1;
         const previousBlock = prev[prevIndex];
@@ -103,27 +114,23 @@ export const mapNotionBlocks = (
             ...prev.slice(0, prevIndex),
             {
               ...previousBlock,
-              items: [
-                ...previousBlock.items,
-                factory.listItem(b.plain_text, b.annotations),
-              ],
+              items: [...previousBlock.items, factory.listItem(content)],
             },
           ];
         }
 
         // 3. If it isn't, create a new list and add the current item to it
-        return [
-          ...prev,
-          factory.orderedList([factory.listItem(b.plain_text, b.annotations)]),
-        ];
+        return [...prev, factory.orderedList([factory.listItem(content)])];
       }
 
       case "to_do": {
-        const b = block.to_do.rich_text[0];
+        const richText = block.to_do.rich_text;
 
-        if (!b) {
-          return prev;
+        if (!richText.length) {
+          return [...prev, factory.break()];
         }
+
+        const content = transformNotionRichTextToPoltergeistText(richText);
 
         const prevIndex = prev.length - 1;
         const previousBlock = prev[prevIndex];
@@ -137,11 +144,7 @@ export const mapNotionBlocks = (
               ...previousBlock,
               items: [
                 ...previousBlock.items,
-                factory.todoItem(
-                  b.plain_text,
-                  block.to_do.checked,
-                  b.annotations
-                ),
+                factory.todoItem(content, block.to_do.checked),
               ],
             },
           ];
@@ -150,20 +153,19 @@ export const mapNotionBlocks = (
         // 3. If it isn't, create a new list and add the current item to it
         return [
           ...prev,
-          factory.todoList([
-            factory.todoItem(b.plain_text, block.to_do.checked, b.annotations),
-          ]),
+          factory.todoList([factory.todoItem(content, block.to_do.checked)]),
         ];
       }
 
       case "quote": {
-        const b = block.quote.rich_text[0];
+        const richText = block.quote.rich_text;
 
-        if (!b) {
-          return prev;
+        if (!richText.length) {
+          return [...prev, factory.break()];
         }
+        const content = transformNotionRichTextToPoltergeistText(richText);
 
-        return [...prev, factory.quote(b.plain_text, b.annotations)];
+        return [...prev, factory.quote(content)];
       }
 
       case "image": {
@@ -179,19 +181,19 @@ export const mapNotionBlocks = (
       }
 
       case "code": {
-        const b = block.code;
-        notionRendererLogger.debug({ codeBlock: b }, "Code block");
-
-        return [...prev, factory.code("Hello World")];
+        return [...prev];
       }
 
       default: {
-        notionRendererLogger.error({ block }, "Unsupported block type");
+        notionRendererLogger.error(
+          { type: block.type },
+          "Unsupported block type"
+        );
         throw new Error("Unsupported block type");
       }
     }
   }, [] as Block[]);
 
-  notionRendererLogger.info({ blocks }, "mapNotionBlocks result");
+  notionRendererLogger.debug({ blocks }, "mapNotionBlocks result");
   return blocks;
 };
