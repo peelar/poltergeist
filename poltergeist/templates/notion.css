@@ -1,0 +1,149 @@
+:root {
+  --black-color: #37352f;
+  --white-color: #ffffff;
+  --gray-text-color: #787774;
+  --gray-bg-color: #f1f1ef;
+  --brown-text-color: #976d57;
+  --brown-bg-color: #f3eeee;
+  --orange-text-color: #cc772f;
+  --orange-bg-color: #f8ecdf;
+  --yellow-text-color: #c29243;
+  --yellow-bg-color: #faf3dd;
+  --green-text-color: #548064;
+  --green-bg-color: #eef3ed;
+  --blue-text-color: #477da5;
+  --blue-bg-color: #e9f3f7;
+  --purple-bg-color: #f6f3f8;
+  --purple-text-color: #a48bbe;
+  --pink-bg-color: #f9f2f5;
+  --pink-text-color: #b35588;
+  --red-bg-color: #faecec;
+  --red-text-color: #c4554d;
+}
+
+.text-black {
+  color: var(--black-color);
+}
+
+.text-white {
+  color: var(--white-color);
+}
+
+.text-gray {
+  color: var(--gray-text-color);
+}
+
+.text-brown {
+  color: var(--brown-text-color);
+}
+
+.text-orange {
+  color: var(--orange-text-color);
+}
+
+.text-yellow {
+  color: var(--yellow-text-color);
+}
+
+.text-green {
+  color: var(--green-text-color);
+}
+
+.text-blue {
+  color: var(--blue-text-color);
+}
+
+.text-purple {
+  color: var(--purple-text-color);
+}
+
+.text-pink {
+  color: var(--pink-text-color);
+}
+
+.text-red {
+  color: var(--red-text-color);
+}
+
+.bg-white {
+  background-color: var(--white-color);
+}
+
+.bg-black {
+  background-color: var(--black-color);
+}
+
+.bg-gray {
+  background-color: var(--gray-bg-color);
+}
+
+.bg-brown {
+  background-color: var(--brown-bg-color);
+}
+
+.bg-orange {
+  background-color: var(--orange-bg-color);
+}
+
+.bg-yellow {
+  background-color: var(--yellow-bg-color);
+}
+
+.bg-green {
+  background-color: var(--green-bg-color);
+}
+
+.bg-blue {
+  background-color: var(--blue-bg-color);
+}
+
+.bg-purple {
+  background-color: var(--purple-bg-color);
+}
+
+.bg-pink {
+  background-color: var(--pink-bg-color);
+}
+
+.bg-red {
+  background-color: var(--red-bg-color);
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.underline {
+  text-decoration: underline;
+}
+
+.font-style-italic {
+  font-style: italic;
+}
+
+.font-style-normal {
+  font-style: normal;
+}
+
+.font-weight-bold {
+  font-weight: bold;
+}
+
+.font-weight-normal {
+  font-weight: normal;
+}
+
+body {
+  font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Helvetica, "Apple Color Emoji", Arial, sans-serif, "Segoe UI Emoji",
+    "Segoe UI Symbol";
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--black-color);
+  background-color: var(--white-color);
+}
+
+h1 {
+  font-size: 1.875rem;
+  font-weight: 600;
+}

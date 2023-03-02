@@ -1,48 +1,7 @@
 ---
-import type { NotionColor, Text as TText } from "../../blocks";
 import type { BlogPost } from "../../blog";
-
-const colorMap: Record<
-  NotionColor,
-  { color: string; backgroundColor: string }
-> = {
-  default: { color: "black", backgroundColor: "inherit" },
-  gray: { color: "gray", backgroundColor: "inherit" },
-  brown: { color: "brown", backgroundColor: "inherit" },
-  orange: { color: "orange", backgroundColor: "inherit" },
-  yellow: { color: "yellow", backgroundColor: "inherit" },
-  green: { color: "green", backgroundColor: "inherit" },
-  blue: { color: "blue", backgroundColor: "inherit" },
-  purple: { color: "purple", backgroundColor: "inherit" },
-  pink: { color: "pink", backgroundColor: "inherit" },
-  red: { color: "red", backgroundColor: "inherit" },
-  gray_background: { color: "white", backgroundColor: "gray" },
-  brown_background: { color: "white", backgroundColor: "brown" },
-  orange_background: { color: "white", backgroundColor: "orange" },
-  yellow_background: { color: "white", backgroundColor: "yellow" },
-  green_background: { color: "white", backgroundColor: "green" },
-  blue_background: { color: "white", backgroundColor: "blue" },
-  purple_background: { color: "white", backgroundColor: "purple" },
-  pink_background: { color: "white", backgroundColor: "pink" },
-  red_background: { color: "white", backgroundColor: "red" },
-};
-
-const matchStylePropsToStyles = (text: TText) => {
-  const styles = text.style;
-  const styleProps = {
-    color: colorMap[styles.color].color,
-    backgroundColor: colorMap[styles.color].backgroundColor,
-    fontWeight: styles.bold ? "bold" : "normal",
-    fontStyle: styles.italic ? "italic" : "normal",
-    textDecoration: styles.strikethrough
-      ? "line-through"
-      : styles.underline
-      ? "underline"
-      : "none",
-  };
-
-  return styleProps;
-};
+import { matchStylePropsToStyles } from "../../styles";
+import "../notion.css";
 
 type Props = {
   post: BlogPost;
@@ -57,7 +16,7 @@ const { blocks, title } = Astro.props.post;
     blocks.map((block) => {
       if (block.type === "text") {
         const styleProps = matchStylePropsToStyles(block);
-        return <p style={styleProps}>{block.content}</p>;
+        return <p class={styleProps}>{block.content}</p>;
       }
 
       if (block.type === "heading" && block.level === 1) {
@@ -66,7 +25,7 @@ const { blocks, title } = Astro.props.post;
             {block.richText.content.map((text) => {
               const styleProps = matchStylePropsToStyles(text);
 
-              return <span style={styleProps}>{text.content}</span>;
+              return <span class={styleProps}>{text.content}</span>;
             })}
           </h1>
         );
@@ -78,7 +37,7 @@ const { blocks, title } = Astro.props.post;
             {block.richText.content.map((text) => {
               const styleProps = matchStylePropsToStyles(text);
 
-              return <span style={styleProps}>{text.content}</span>;
+              return <span class={styleProps}>{text.content}</span>;
             })}
           </h2>
         );
@@ -90,7 +49,7 @@ const { blocks, title } = Astro.props.post;
             {block.richText.content.map((text) => {
               const styleProps = matchStylePropsToStyles(text);
 
-              return <span style={styleProps}>{text.content}</span>;
+              return <span class={styleProps}>{text.content}</span>;
             })}
           </h3>
         );
@@ -104,7 +63,7 @@ const { blocks, title } = Astro.props.post;
                 <li>
                   {listItem.richText.content.map((text) => {
                     const styleProps = matchStylePropsToStyles(text);
-                    return <span style={styleProps}>{text.content}</span>;
+                    return <span class={styleProps}>{text.content}</span>;
                   })}
                 </li>
               );
@@ -121,7 +80,7 @@ const { blocks, title } = Astro.props.post;
                 <li>
                   {listItem.richText.content.map((text) => {
                     const styleProps = matchStylePropsToStyles(text);
-                    return <span style={styleProps}>{text.content}</span>;
+                    return <span class={styleProps}>{text.content}</span>;
                   })}
                 </li>
               );
@@ -144,7 +103,7 @@ const { blocks, title } = Astro.props.post;
                 >
                   {listItem.richText.content.map((text) => {
                     const styleProps = matchStylePropsToStyles(text);
-                    return <span style={styleProps}>{text.content}</span>;
+                    return <span class={styleProps}>{text.content}</span>;
                   })}
                 </li>
               );
@@ -174,7 +133,7 @@ const { blocks, title } = Astro.props.post;
           <p>
             {block.content.map((text) => {
               const richTextStyles = matchStylePropsToStyles(text);
-              return <span style={richTextStyles}>{text.content}</span>;
+              return <span class={richTextStyles}>{text.content}</span>;
             })}
           </p>
         );
