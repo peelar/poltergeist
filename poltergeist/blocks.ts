@@ -19,64 +19,64 @@ export type Text = {
   style: StyleProps;
 };
 
-type RichText = {
+export type RichText = {
   type: "richText";
   content: Text[];
 };
 
-type Heading = {
+export type Heading = {
   type: "heading";
   level: 1 | 2 | 3;
   richText: RichText;
 };
 
-type ListItem = {
+export type ListItem = {
   type: "listItem";
   richText: RichText;
 };
 
-type UnorderedList = {
+export type UnorderedList = {
   type: "unorderedList";
   items: ListItem[];
 };
 
-type OrderedList = {
+export type OrderedList = {
   type: "orderedList";
   items: ListItem[];
 };
 
-type TodoListItem = {
+export type TodoListItem = {
   type: "todoListItem";
   richText: RichText;
   checked: boolean;
 };
 
-type TodoList = {
+export type TodoList = {
   type: "todoList";
   items: TodoListItem[];
 };
 
-type Quote = {
+export type Quote = {
   type: "quote";
   richText: RichText;
 };
 
-type Image = {
+export type Image = {
   type: "image";
   url: string;
   caption: string;
 };
 
-type Divider = {
+export type Divider = {
   type: "divider";
 };
 
-type Code = {
+export type Code = {
   type: "code";
   richText: RichText;
 };
 
-type Break = {
+export type Break = {
   type: "break";
 };
 

@@ -11,6 +11,9 @@ export class NotionClient {
   private client: Client;
   constructor() {
     if (!import.meta.env.NOTION_API_TOKEN) {
+      notionClientLogger.error(
+        "You must provide NOTION_API_TOKEN as env var. See .env.example"
+      );
       throw new Error(
         "You must provide NOTION_API_TOKEN as env var. See .env.example"
       );
@@ -24,6 +27,9 @@ export class NotionClient {
   async getPosts() {
     try {
       if (!import.meta.env.NOTION_DATABASE_ID) {
+        notionClientLogger.error(
+          "You must provide NOTION_DATABASE_ID as env var. See .env.example"
+        );
         throw new Error(
           "You must provide NOTION_DATABASE_ID as env var. See .env.example"
         );

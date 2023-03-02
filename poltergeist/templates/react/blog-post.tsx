@@ -1,134 +1,65 @@
-import type { BlogPost } from "../../blog";
-import { matchStylePropsToStyles } from "../../styles";
+import type { BlogPost as BlogPostType } from "../../blog";
+import { Break } from "./components/break";
+import { Divider } from "./components/divider";
+import { Heading } from "./components/Heading";
+import { Image } from "./components/image";
+import { OrderedList } from "./components/ordered-list";
+import { RichText } from "./components/rich-text";
+import { Text } from "./components/text";
+import { TodoList } from "./components/todo-list";
+import { UnorderedList } from "./components/unordered-list";
 import "../notion.css";
 
 type Props = {
-  post: BlogPost;
+  post: BlogPostType;
 };
 
-export const ReactBlogPost = ({ post }: Props) => {
+export const BlogPost = ({ post }: Props) => {
   const { blocks, title } = post;
   return (
     <article>
       <h1>{title}</h1>
       {blocks.map((block) => {
         if (block.type === "text") {
-          const classes = matchStylePropsToStyles(block);
-          return <p className={classes}>{block.content}</p>;
-        }
-
-        if (block.type === "heading" && block.level === 1) {
           return (
-            <h1>
-              {block.richText.content.map((text) => {
-                const classes = matchStylePropsToStyles(text);
-
-                return <span className={classes}>{text.content}</span>;
-              })}
-            </h1>
+            <p>
+              <Text {...block} />
+            </p>
           );
         }
 
-        if (block.type === "heading" && block.level === 2) {
-          return (
-            <h2>
-              {block.richText.content.map((text) => {
-                const classes = matchStylePropsToStyles(text);
-
-                return <span className={classes}>{text.content}</span>;
-              })}
-            </h2>
-          );
-        }
-
-        if (block.type === "heading" && block.level === 3) {
-          return (
-            <h3>
-              {block.richText.content.map((text) => {
-                const classes = matchStylePropsToStyles(text);
-
-                return <span className={classes}>{text.content}</span>;
-              })}
-            </h3>
-          );
+        if (block.type === "heading") {
+          return <Heading {...block} />;
         }
 
         if (block.type === "unorderedList") {
-          return (
-            <ul>
-              {block.items.map((listItem) => {
-                return (
-                  <li>
-                    {listItem.richText.content.map((text) => {
-                      const classes = matchStylePropsToStyles(text);
-                      return <span className={classes}>{text.content}</span>;
-                    })}
-                  </li>
-                );
-              })}
-            </ul>
-          );
+          return <UnorderedList {...block} />;
         }
 
         if (block.type === "orderedList") {
-          return (
-            <ol>
-              {block.items.map((listItem) => {
-                return (
-                  <li>
-                    {listItem.richText.content.map((text) => {
-                      const classes = matchStylePropsToStyles(text);
-                      return <span className={classes}>{text.content}</span>;
-                    })}
-                  </li>
-                );
-              })}
-            </ol>
-          );
+          return <OrderedList {...block} />;
         }
 
         if (block.type === "todoList") {
-          return (
-            <ul>
-              {block.items.map((listItem) => {
-                return (
-                  <li
-                    style={{
-                      textDecoration: listItem.checked
-                        ? "line-through"
-                        : "initial",
-                    }}
-                  >
-                    {listItem.richText.content.map((text) => {
-                      const classes = matchStylePropsToStyles(text);
-                      return <span className={classes}>{text.content}</span>;
-                    })}
-                  </li>
-                );
-              })}
-            </ul>
-          );
+          return <TodoList {...block} />;
         }
 
         if (block.type === "divider") {
-          return <hr />;
+          return <Divider />;
         }
 
         if (block.type === "break") {
-          return <br />;
+          return <Break />;
         }
 
         if (block.type === "image") {
-          return <img src={block.url} alt={block.caption} />;
+          return <Image {...block} />;
         }
 
         if (block.type === "richText") {
           return (
             <p>
-              {block.content.map((text) => {
-                const richTextStyles = matchStylePropsToStyles(text);
-                return <span className={richTextStyles}>{text.content}</span>;
-              })}
+              <RichText {...block} />
             </p>
           );
         }
