@@ -27,8 +27,8 @@ export const matchStylePropsToStyles = (text: Text) => {
   const classes = [
     ...(styles.bold ? ["font-weight-bold"] : []),
     ...(styles.italic ? ["font-style-italic"] : []),
-    ...(styles.strikethrough ? ["text-decoration-line-through"] : []),
-    ...(styles.underline ? ["text-decoration-underline"] : []),
+    ...(styles.strikethrough ? ["line-through"] : []),
+    ...(styles.underline ? ["underline"] : []),
     ...colorMap[styles.color],
   ];
 
