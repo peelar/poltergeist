@@ -1,6 +1,7 @@
 ---
 import { Blog } from "../../../poltergeist/blog";
-import BlogPost from "../../../poltergeist/templates/astro/blog-post.astro";
+// import AstroBlogPost from "../../../poltergeist/templates/astro/blog-post.astro";
+import { ReactBlogPost } from "../../../poltergeist/templates/react/blog-post";
 import type { InferGetStaticPathsResult } from "../../types";
 
 export const getStaticPaths = async () => {
@@ -29,5 +30,6 @@ const post = response.data;
 ---
 
 <main>
-  <BlogPost post={post} />
+  <!-- <AstroBlogPost post={post} /> -->
+  <ReactBlogPost post={post} />
 </main>
