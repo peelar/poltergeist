@@ -2,7 +2,7 @@ import type { Block as BlockType } from "../../../blocks";
 import { Break } from "./break";
 import { Code } from "./code";
 import { Divider } from "./divider";
-import { Heading } from "./Heading";
+import { Heading } from "./heading";
 import { Image } from "./image";
 import { OrderedList } from "./ordered-list";
 import { Quote } from "./quote";

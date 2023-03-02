@@ -1,5 +1,5 @@
 import type { BlogPost as BlogPostType } from "../../blog";
-import "../notion.css";
+import "../../themes/notion.css";
 import { Block } from "./components/block";
 
 type Props = {
