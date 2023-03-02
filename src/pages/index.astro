@@ -1,12 +1,16 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import "../home.css";
 
 const isNotionApiTokenSet = !!import.meta.env.NOTION_API_TOKEN;
 const isNotionDatabaseIdSet = !!import.meta.env.NOTION_DATABASE_ID;
 const isWarning = !isNotionApiTokenSet || !isNotionDatabaseIdSet;
 ---
 
-<Layout title="Welcome to Poltergeist 👻">
+<Layout
+  title="Welcome to Poltergeist 👻"
+  description="Possibly the coolest Astro template in the world."
+>
   <main class="intro">
     <h1>Poltergeist</h1>
     <img src="/logo.svg" alt="Poltergeist logo" />

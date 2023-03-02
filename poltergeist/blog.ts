@@ -2,9 +2,16 @@ import { isFullBlock, isFullPage } from "@notionhq/client";
 import { logger } from "./logger";
 import { createFailureResponse, createSuccessResponse } from "../src/lib/api";
 import { NotionClient } from "./notion/notion-client";
-import { POST_PROPERTY, PUBLISHED_PROPERTY, SLUG_PROPERTY } from "./const";
+import {
+  META_DESCRIPTION_PROPERTY,
+  META_TITLE_PROPERTY,
+  POST_PROPERTY,
+  PUBLISHED_PROPERTY,
+  SLUG_PROPERTY,
+} from "./const";
 import type { Block } from "./blocks";
 import { mapNotionBlocks } from "./notion/notion-map-blocks";
+import type { RichTextItemResponse } from "@notionhq/client/build/src/api-endpoints";
 
 const blogLogger = logger.child({ module: "notion" });
 
@@ -13,7 +20,15 @@ const isDev = import.meta.env.DEV;
 export type BlogPost = {
   id: string;
   title: string;
+  meta: {
+    title: string;
+    description: string;
+  };
   blocks: Block[];
+};
+
+const joinRichPlainText = (richText: RichTextItemResponse[]) => {
+  return richText.map((t) => t.plain_text).join(" ");
 };
 
 export class Blog {
@@ -52,11 +67,11 @@ export class Blog {
 
         const title =
           postProperty.type === "title"
-            ? postProperty.title?.map((t) => t.plain_text).join(" ")
+            ? joinRichPlainText(postProperty.title)
             : "";
         const slug =
           slugProperty.type === "rich_text"
-            ? slugProperty.rich_text[0].plain_text
+            ? joinRichPlainText(slugProperty.rich_text)
             : "";
 
         return { params: { slug }, props: { id: page.id, title } };
@@ -93,11 +108,31 @@ export class Blog {
       blogLogger.trace({ page, blocks }, "Returning blog post data");
       const postProperty = page.properties[POST_PROPERTY];
       const title =
-        postProperty.type === "title" ? postProperty.title?.[0].plain_text : "";
+        postProperty.type === "title"
+          ? joinRichPlainText(postProperty.title)
+          : "";
+
+      const metaTitleProperty = page.properties[META_TITLE_PROPERTY];
+      const metaDescriptionProperty =
+        page.properties[META_DESCRIPTION_PROPERTY];
+
+      const metaTitle =
+        metaTitleProperty.type === "rich_text"
+          ? joinRichPlainText(metaTitleProperty.rich_text)
+          : title;
+
+      const metaDescription =
+        metaDescriptionProperty.type === "rich_text"
+          ? joinRichPlainText(metaDescriptionProperty.rich_text)
+          : "";
 
       const post: BlogPost = {
         id: page.id,
         title,
+        meta: {
+          title: metaTitle,
+          description: metaDescription,
+        },
         blocks: mapNotionBlocks(blocks),
       };
 

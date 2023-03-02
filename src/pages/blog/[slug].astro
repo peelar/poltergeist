@@ -2,6 +2,7 @@
 import { Blog } from "../../../poltergeist/blog";
 // import AstroBlogPost from "../../../poltergeist/templates/astro/blog-post.astro";
 import { BlogPost as ReactBlogPost } from "../../../poltergeist/templates/react/blog-post";
+import Layout from "../../layouts/Layout.astro";
 import type { InferGetStaticPathsResult } from "../../types";
 
 export const getStaticPaths = async () => {
@@ -27,9 +28,12 @@ if (!response.ok) {
 }
 
 const post = response.data;
+const { title, description } = post.meta;
 ---
 
-<main>
-  <!-- <AstroBlogPost post={post} /> -->
-  <ReactBlogPost post={post} />
-</main>
+<Layout title={title} description={description}>
+  <main>
+    <!-- <AstroBlogPost post={post} /> -->
+    <ReactBlogPost post={post} />
+  </main>
+</Layout>

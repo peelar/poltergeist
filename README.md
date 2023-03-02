@@ -38,11 +38,13 @@ Poltergeist uses [Notion](https://notion.so) as a blog post database. That means
    - `Post` (title) - the title of the post. Should point to the post's page.
    - `Published` (checkbox) - indicates whether the post is published or not.
    - `Slug` (text) - the slug of the post.
+   - `Title` - meta title of the post. If not set, the title from the `Post` property will be used.
+   - `Description` - meta description of the post.
 
 You can set different names for these properties in your `.env` file. See `.env.example`.
 
-4. Click _Share_, and copy the database id. It's the part of the URL after `notion.so/` and before the first `?`.
-5. Store the database id in your `.env` file as `NOTION_DATABASE_ID`.
+1. Click _Share_, and copy the database id. It's the part of the URL after `notion.so/` and before the first `?`.
+2. Store the database id in your `.env` file as `NOTION_DATABASE_ID`.
 
 </details>
   
