@@ -1,9 +1,11 @@
 import type { Block as BlockType } from "../../../blocks";
 import { Break } from "./break";
+import { Code } from "./code";
 import { Divider } from "./divider";
 import { Heading } from "./Heading";
 import { Image } from "./image";
 import { OrderedList } from "./ordered-list";
+import { Quote } from "./quote";
 import { RichText } from "./rich-text";
 import { Text } from "./text";
 import { TodoList } from "./todo-list";
@@ -54,5 +56,13 @@ export const Block = (block: BlockType) => {
     );
   }
 
-  return <span>Unsupported element</span>;
+  if (block.type === "quote") {
+    return <Quote {...block} />;
+  }
+
+  if (block.type === "code") {
+    return <Code {...block} />;
+  }
+
+  return <span style={{ color: "red" }}>Unsupported element</span>;
 };

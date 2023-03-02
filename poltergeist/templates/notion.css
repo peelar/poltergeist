@@ -19,6 +19,10 @@
   --pink-text-color: #b35588;
   --red-bg-color: #faecec;
   --red-text-color: #c4554d;
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2rem;
 }
 
 .text-black {
@@ -146,4 +150,30 @@ body {
 h1 {
   font-size: 1.875rem;
   font-weight: 600;
+}
+
+article {
+  margin: 0 auto;
+  max-width: 48rem;
+}
+
+.p-1 {
+  padding: var(--space-1);
+}
+
+.p-2 {
+  padding: var(--space-2);
+}
+
+.p-3 {
+  padding: var(--space-3);
+}
+
+.p-4 {
+  padding: var(--space-4);
+}
+
+blockquote {
+  margin: 0;
+  margin-left: var(--space-2);
 }

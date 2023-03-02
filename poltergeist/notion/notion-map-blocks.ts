@@ -181,7 +181,14 @@ export const mapNotionBlocks = (
       }
 
       case "code": {
-        return [...prev];
+        const richText = block.code.rich_text;
+
+        if (!richText.length) {
+          return [...prev, factory.break()];
+        }
+        const content = transformNotionRichTextToPoltergeistText(richText);
+
+        return [...prev, factory.code(content)];
       }
 
       default: {

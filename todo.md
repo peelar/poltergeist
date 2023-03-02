@@ -10,14 +10,14 @@
 - [x] - super cool intro page with:
   - [x] - poltergeist logo
   - [x] - configuration status (whether API key is found or not)
-  - [x] - list of posts
 - [x] - list of posts
 - [x] - annotations in the middle of the post
+- [x] - basic styles
+- [x] - React renderer
+- [x] - code snippets
 - [ ] - nested blocks (e.g. list inside a list)
-- [ ] - code snippets
-- [ ] - basic styles
 - [ ] - test combining Notion and local markdown
-- [ ] - React renderer
+- [ ] - pretty code snippets
 - map Notion blocks to components
   - [x] - text
   - [x] - headings
@@ -33,6 +33,7 @@
 
 ## Post MVP
 
+- [ ] - more templates
 - [ ] - add mailing
 - [ ] - investigate generating markdown on demand (e.g. from CI/CD)
 - [ ] - add metadata management from Notion
