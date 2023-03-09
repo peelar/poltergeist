@@ -39,10 +39,22 @@ export class Blog {
 
   async getPostsPaths() {
     try {
-      const response = await this.notion.getPosts();
+      const databaseId = import.meta.env.NOTION_DATABASE_ID;
+      if (!import.meta.env.NOTION_DATABASE_ID) {
+        blogLogger.error(
+          "You must provide NOTION_DATABASE_ID as env var. See .env.example"
+        );
+        throw new Error(
+          "You must provide NOTION_DATABASE_ID as env var. See .env.example"
+        );
+      }
+
+      const response = await this.notion.getDatabase(databaseId);
       if (!response.ok) {
         return response;
       }
+
+      // todo: add schema for blog, validate the response with that schema
 
       const pages = response.data.results.filter(isFullPage).filter((page) => {
         const published = page.properties[PUBLISHED_PROPERTY];
@@ -60,7 +72,6 @@ export class Blog {
       });
       blogLogger.trace({ pages }, "Fetched pages");
 
-      // ? Should the Notion blocks processing logic be moved somewhere else?
       const paths = pages.map((page) => {
         const slugProperty = page.properties[SLUG_PROPERTY];
         const postProperty = page.properties[POST_PROPERTY];
@@ -87,7 +98,7 @@ export class Blog {
 
   async getPost(id: string) {
     try {
-      const postResponse = await this.notion.getPost(id);
+      const postResponse = await this.notion.getPage(id);
       if (!postResponse.ok) {
         return postResponse;
       }
@@ -98,7 +109,7 @@ export class Blog {
       }
 
       const page = postResponse.data;
-      const blocksResponse = await this.notion.getBlocks(id);
+      const blocksResponse = await this.notion.getPageBlocks(id);
 
       if (!blocksResponse.ok) {
         return blocksResponse;

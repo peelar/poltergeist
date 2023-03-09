@@ -23,43 +23,33 @@ export class NotionClient {
       auth: import.meta.env.NOTION_API_TOKEN,
     });
   }
-
-  async getPosts() {
+  async getDatabase(databaseId: string) {
     try {
-      if (!import.meta.env.NOTION_DATABASE_ID) {
-        notionClientLogger.error(
-          "You must provide NOTION_DATABASE_ID as env var. See .env.example"
-        );
-        throw new Error(
-          "You must provide NOTION_DATABASE_ID as env var. See .env.example"
-        );
-      }
-
       const response = await this.client.databases.query({
-        database_id: import.meta.env.NOTION_DATABASE_ID,
+        database_id: databaseId,
       });
 
-      notionClientLogger.info({ response }, "Returning posts");
+      notionClientLogger.info({ response }, "Returning database");
       return createSuccessResponse(response);
     } catch (error: unknown) {
-      notionClientLogger.error({ error }, "Failed to get posts");
+      notionClientLogger.error({ error }, "Failed to get database");
       return createFailureResponse("Something went wrong", "UNKNOWN");
     }
   }
-  async getPost(pageId: string) {
+  async getPage(pageId: string) {
     try {
       const response = await this.client.pages.retrieve({
         page_id: pageId,
       });
-      notionClientLogger.info({ response }, "Returning post");
+      notionClientLogger.info({ response }, "Returning page");
       return createSuccessResponse(response);
     } catch (error: unknown) {
-      notionClientLogger.error({ error }, "Failed to get blog post");
+      notionClientLogger.error({ error }, "Failed to get page");
       return createFailureResponse("Something went wrong", "UNKNOWN");
     }
   }
 
-  async getBlocks(pageId: string) {
+  async getPageBlocks(pageId: string) {
     try {
       const response = await this.client.blocks.children.list({
         block_id: pageId,
